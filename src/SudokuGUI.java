@@ -33,9 +33,8 @@ public class SudokuGUI extends JFrame {
                 Sudoku solver = new Sudoku();
                 if (solver.sudokuSolver(board, 0, 0)) {
                     updateBoard(board);
-                    JOptionPane.showMessageDialog(SudokuGUI.this, "Sudoku solved successfully!");
                 } else {
-                    JOptionPane.showMessageDialog(SudokuGUI.this, "Invalid Sudoku puzzle!");
+                    JOptionPane.showMessageDialog(SudokuGUI.this, "This puzzle can't be solved :(");
                 }
             }
         });
@@ -101,7 +100,7 @@ public class SudokuGUI extends JFrame {
         add(buttonPanel, BorderLayout.CENTER);
 
 
-        setLocationRelativeTo(null);
+
         setVisible(true);
     }
 
@@ -132,7 +131,6 @@ public class SudokuGUI extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new SudokuGUI();
             }
