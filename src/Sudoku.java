@@ -1,47 +1,35 @@
+
 public class Sudoku {
     int[][] board;
 
     public Sudoku(){
-        board = new int[9][9];
     }
 
-    public void runSudoku(int[][] arr){
-        sudokuSolver(arr, new int[3], 0, 0);
-    }
-
-    // not exactly sure where to go, I originally had the array int to store the last used index and valu I changed,
-    // but realized that I can just use the for loop to account for everything. still troubleshooting
-    public boolean sudokuSolver(int[][] arr, int[] ind, int i, int j){
+    // next goal is to optimize a bit more. Once a value has been found to be valid, I'll take that value out
+    // of the possible values for its neighbors instead of running through all 9 numbers every iteration
+    public boolean sudokuSolver(int[][] arr, int i, int j){
         if(i == 9){ // Once the row is past the last index on the board
-            printBoard(arr);
             return true;
         }
-
+        if(j == 9){
+            return sudokuSolver(arr, i+1, 0);
+        }
+//        System.out.println("bye");
         if(arr[i][j] == 0){
+//            System.out.println("hi");
             for(int a = 1; a < 10; a++){
                 if(squareValid(arr, a, i, j) && lineValid(arr[i], a) && lineValid(getColumn(arr, j), a)){
+//                    System.out.println("hello");
                     arr[i][j] = a;
-                    if(j==8){ // checking if the counter has reached the end of the board
-                        if(sudokuSolver(arr, ind, i+1, 0)){
-                            return true;
-                        }
-                    }else{
-                        if(sudokuSolver(arr, ind, i, j+1)){
-                            return true;
-                        }
+                    if(sudokuSolver(arr, i, j+1)){
+                        return true;
                     }
+                    arr[i][j] = 0;
                 }
             }
-            arr[i][j] = 0;
         }else{
-            if(j==8){
-                if(sudokuSolver(arr, ind, i+1, 0)){
-                    return true;
-                }
-            }else{
-                if(sudokuSolver(arr, ind, i, j+1)){
-                    return true;
-                }
+            if(sudokuSolver(arr, i, j+1)){
+                return true;
             }
         }
         return false;
@@ -58,7 +46,7 @@ public class Sudoku {
 
     public boolean squareValid(int[][] arr, int num, int i, int j){
         for(int a = i/3*3; a < (i/3*3 + 3); a++){
-            for(int b = j/3*3; b < (j/3*3 + 3); j++){
+            for(int b = j/3*3; b < (j/3*3 + 3); b++){
                 if(arr[a][b] == num){
                     return false;
                 }
@@ -92,18 +80,20 @@ public class Sudoku {
 
     public static void main(String[] args){
         Sudoku a = new Sudoku();
-        int[][] testBoard = new int[9][9];
-        testBoard[0][2] = 4; testBoard[0][4] = 5;
-        testBoard[1][0] = 9; testBoard[1][3] = 7; testBoard[1][4] = 3; testBoard[1][5] = 4; testBoard[1][6] = 6;
-        testBoard[2][2] = 3; testBoard[2][4] = 2; testBoard[2][5] = 1; testBoard[2][7] = 4; testBoard[2][8] = 9;
-        testBoard[3][1] = 3; testBoard[3][2] = 5; testBoard[3][4] = 9; testBoard[3][6] = 4; testBoard[3][7] = 8;
-        testBoard[4][1] = 9; testBoard[4][7] = 3;
-        testBoard[5][1] = 7; testBoard[5][2] = 6; testBoard[5][4] = 1; testBoard[5][6] = 9; testBoard[5][7] = 2;
-        testBoard[6][0] = 3; testBoard[6][1] = 1; testBoard[6][3] = 9; testBoard[6][4] = 7; testBoard[6][6] = 2;
-        testBoard[7][2] = 9; testBoard[7][3] = 1; testBoard[7][4] = 8; testBoard[7][5] = 2; testBoard[7][8] = 3;
-        testBoard[8][4] = 6; testBoard[8][6] = 1;
-        a.printBoard(testBoard);
-        a.runSudoku(testBoard);
-        a.printBoard(testBoard);
+        int[][] easy1 = {
+        {5, 3, 0, 0, 7, 0, 0, 0, 0},
+        {6, 0, 0, 1, 9, 5, 0, 0, 0},
+        {0, 9, 8, 0, 0, 0, 0, 6, 0},
+        {8, 0, 0, 0, 6, 0, 0, 0, 3},
+        {4, 0, 0, 8, 0, 3, 0, 0, 1},
+        {7, 0, 0, 0, 2, 0, 0, 0, 6},
+        {0, 6, 0, 0, 0, 0, 2, 8, 0},
+        {0, 0, 0, 4, 1, 9, 0, 0, 5},
+        {0, 0, 0, 0, 8, 0, 0, 7, 9}};
+
+//        int i = 4;
+//        int j = 6;
+//        System.out.println(i/3*3);
+//        System.out.println(j/3*3);
     }
 }
